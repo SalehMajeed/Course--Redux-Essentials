@@ -1,18 +1,36 @@
 import React, { useState } from 'react';
+import { connect } from 'react-redux';
+
+const actions = {
+	increment: val => ({ type: 'increment', payload: +val }),
+	decrement: val => ({ type: 'decrement', payload: +val }),
+};
 
 function Counter(props) {
-	const [num, newState] = useState(props.initialState);
-	const [input_num, input_newState] = useState(props.inputDefaultValue);
+	const FromMapStateToProps = props.data;
+	const FromMapDispatchToProps = props.mapDispatch;
+	const [input_num, input_newState] = useState(props.initialInputValue);
 
 	return (
 		<div>
 			<div>
 				<ul>
-					<li key='same' className='button' onClick={() => newState(num + 1)}>
+					<li
+						key='same'
+						className='button'
+						onClick={() => {
+							const action_object = actions.increment(1);
+							FromMapDispatchToProps(action_object);
+						}}>
 						+
 					</li>
-					<li>Current State = {num}</li>
-					<li className='button' onClick={() => newState(num - 1)}>
+					<li>Current State = {FromMapStateToProps.value}</li>
+					<li
+						className='button'
+						onClick={() => {
+							const action_object = actions.decrement(1);
+							FromMapDispatchToProps(action_object);
+						}}>
 						-
 					</li>
 				</ul>
@@ -27,14 +45,20 @@ function Counter(props) {
 							className='input_field'
 						/>
 					</li>
-					<li className='input_value' onClick={() => newState(prevState => +prevState + +input_num)}>
+					<li
+						className='input_value'
+						onClick={() => {
+							const action_object = actions.increment(input_num);
+							FromMapDispatchToProps(action_object);
+						}}>
 						Add Value
 					</li>
 					<li
 						className='input_value'
 						onClick={() =>
 							setTimeout(() => {
-								newState(prevState => +prevState + +input_num);
+								const action_object = actions.increment(input_num);
+								FromMapDispatchToProps(action_object);
 							}, 1000)
 						}>
 						Add Value Async
@@ -45,4 +69,16 @@ function Counter(props) {
 	);
 }
 
-export default Counter;
+function mapStateToProps(state) {
+	return {
+		data: state,
+	};
+}
+
+function mapDispatchToProps(dispatch) {
+	return {
+		mapDispatch: action => dispatch(action),
+	};
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Counter);
