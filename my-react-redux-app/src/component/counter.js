@@ -6,6 +6,13 @@ const actions = {
 	decrement: val => ({ type: 'decrement', payload: +val }),
 };
 
+function updateState(val, type, dispatchFn) {
+	if (!Number.isNaN(+val)) {
+		const action_object = actions[type](val);
+		dispatchFn(action_object);
+	}
+}
+
 function Counter(props) {
 	const FromMapStateToProps = props.data;
 	const FromMapDispatchToProps = props.mapDispatch;
@@ -19,8 +26,7 @@ function Counter(props) {
 						key='same'
 						className='button'
 						onClick={() => {
-							const action_object = actions.increment(1);
-							FromMapDispatchToProps(action_object);
+							updateState(1, 'increment', FromMapDispatchToProps);
 						}}>
 						+
 					</li>
@@ -28,8 +34,7 @@ function Counter(props) {
 					<li
 						className='button'
 						onClick={() => {
-							const action_object = actions.decrement(1);
-							FromMapDispatchToProps(action_object);
+							updateState(1, 'decrement', FromMapDispatchToProps);
 						}}>
 						-
 					</li>
@@ -48,8 +53,7 @@ function Counter(props) {
 					<li
 						className='input_value'
 						onClick={() => {
-							const action_object = actions.increment(input_num);
-							FromMapDispatchToProps(action_object);
+							updateState(input_num, 'increment', FromMapDispatchToProps);
 						}}>
 						Add Value
 					</li>
@@ -57,8 +61,7 @@ function Counter(props) {
 						className='input_value'
 						onClick={() =>
 							setTimeout(() => {
-								const action_object = actions.increment(input_num);
-								FromMapDispatchToProps(action_object);
+								updateState(input_num, 'increment', FromMapDispatchToProps);
 							}, 1000)
 						}>
 						Add Value Async
