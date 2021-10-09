@@ -7,6 +7,7 @@ function App() {
 	return (
 		<div className='App'>
 			<Provider store={store}>
+				{/* Centralized State for child Components */}
 				<Counter initialInputValue={2} />
 			</Provider>
 		</div>
