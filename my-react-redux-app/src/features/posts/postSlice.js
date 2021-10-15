@@ -59,14 +59,14 @@ const postSlice = createSlice({
 		},
 		reactionAdded(state, action) {
 			const { postId, reaction } = action.payload;
-			const existingPost = state.find(post => post.id == postId);
+			const existingPost = state.find(post => post.id === postId);
 			if (existingPost) {
 				existingPost.reactions[reaction]++;
 			}
 		},
 		postUpdated(state, action) {
 			const { id, title, content } = action.payload;
-			const existingPost = state.find(post => post.id == id);
+			const existingPost = state.find(post => post.id === id);
 			if (existingPost) {
 				existingPost.title = title;
 				existingPost.content = content;
@@ -75,5 +75,6 @@ const postSlice = createSlice({
 	},
 });
 
+export const selectAllPosts = state => state.posts;
 export const { postAdded, postUpdated, reactionAdded } = postSlice.actions;
 export default postSlice.reducer;
